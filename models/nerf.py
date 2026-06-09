@@ -43,7 +43,7 @@ class NeRF(nn.Module):
         else:
             self.output_linear = nn.Linear(self.W, self.out_channels)
 
-    def forward(self, input_pts: torch.tensor, input_views: torch.tensor = None) -> torch.tensor:
+    def forward(self, input_pts: torch.Tensor, input_views: torch.Tensor = None) -> torch.Tensor:
         h = input_pts
         for idx, linear_layer in enumerate(self.linear_layers):
             h = linear_layer(h)

@@ -9,12 +9,12 @@ import torch.nn.functional as F
 from tqdm import tqdm
 
 def volume_render(
-    raw: torch.tensor,
-    z_vals: torch.tensor,
-    rays_d: torch.tensor,
+    raw: torch.Tensor,
+    z_vals: torch.Tensor,
+    rays_d: torch.Tensor,
     raw_noise_std: float=0.,
     use_white_background: bool=False
-) -> tuple[torch.tensor, torch.tensor]:
+) -> tuple[torch.Tensor, torch.Tensor]:
     dists = z_vals[..., 1:] - z_vals[..., :-1]
     dists = torch.cat([
         dists,
@@ -43,12 +43,12 @@ def volume_render(
     return rgb_map, weights
 
 def sample_pdf(
-    bins: torch.tensor,
-    weights: torch.tensor,
+    bins: torch.Tensor,
+    weights: torch.Tensor,
     n_importance: int,
     eps: float=1e-5,
     use_deterministic_sampling=False
-) -> torch.tensor:
+) -> torch.Tensor:
     weights = weights + eps
     pdf = weights / weights.sum(dim=-1, keepdim=True)
     cdf = torch.cumsum(pdf, dim=-1)
@@ -78,7 +78,7 @@ def render(
     nerf_fine: NeRF,
     embed_pts: PositionalEmbeddings,
     embed_viewdirs: PositionalEmbeddings,
-    rays: torch.tensor,
+    rays: torch.Tensor,
     n_samples: int,
     n_importance: int,
     perturb: bool=False,
@@ -87,7 +87,7 @@ def render(
     far: float=6.0,
     raw_noise_std: float=0.0,
     use_white_background: bool=False,
-) -> dict[str, torch.tensor]:
+) -> dict[str, torch.Tensor]:
     rays_o, rays_d = rays[0], rays[1]
     n_rays = rays_o.shape[0]
 
@@ -156,7 +156,7 @@ def render(
         output["rgb_map_fine"] = rgb_map_fine
     return output
 
-def get_rays(H: int, W: int, K: torch.tensor, c2w: torch.tensor) -> tuple[torch.tensor, torch.tensor]:
+def get_rays(H: int, W: int, K: torch.Tensor, c2w: torch.Tensor) -> tuple[torch.Tensor, torch.Tensor]:
     i, j = torch.meshgrid(
         torch.arange(W, dtype=torch.float32, device=c2w.device),
         torch.arange(H, dtype=torch.float32, device=c2w.device),
@@ -180,12 +180,12 @@ def render_path(
     nerf_fine: NeRF,
     embed_pts: PositionalEmbeddings,
     embed_viewdirs: PositionalEmbeddings,
-    render_poses: torch.tensor,
+    render_poses: torch.Tensor,
     n_samples: int,
     n_importance: int,
     batch_size: int,
     hwf: tuple[int, int, int],
-    K: torch.tensor,
+    K: torch.Tensor,
     chunk: int=32768,
     near: float=2.0,
     far: float=6.0,

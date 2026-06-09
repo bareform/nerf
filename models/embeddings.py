@@ -10,7 +10,7 @@ class PositionalEmbeddings(object):
         num_freqs: int=10,
         include_input: bool=True,
         use_log_sampling: bool=True,
-        periodic_functions: tuple[Callable[[torch.tensor], torch.tensor], ...]=(torch.sin, torch.cos)
+        periodic_functions: tuple[Callable[[torch.Tensor], torch.Tensor], ...]=(torch.sin, torch.cos)
     ) -> None:
         self.in_dims = in_dims
         self.max_freq = max_freq
@@ -40,7 +40,7 @@ class PositionalEmbeddings(object):
                 out_dim += self.in_dims
         self.out_dim = out_dim
 
-    def __call__(self, inputs: torch.tensor) -> torch.tensor:
+    def __call__(self, inputs: torch.Tensor) -> torch.Tensor:
         outputs = torch.cat(
             [emb(inputs) for emb in self.embeddings],
             dim=-1,
