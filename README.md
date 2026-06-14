@@ -33,7 +33,7 @@ To train a low-res `lego` NeRF:
 python3 -m utils.trainer --config="./configs/lego.toml"
 ```
 
-After training for 200K iterations, you can find the following gif at `./assets/lego/lego.gif`.
+After training for 200K iterations, you can find results similiar to gif at `./assets/lego/lego.gif`.
 
 <img src="assets/lego/lego.gif" width="300" alt="lego">
 
