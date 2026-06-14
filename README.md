@@ -11,7 +11,7 @@ conda env create -f dependencies/environment.yml
 conda activate bareform
 
 git clone https://github.com/bareform/nerf.git
-cd dcgan
+cd nerf
 ```
 
 <details>
