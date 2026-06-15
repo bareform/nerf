@@ -338,7 +338,11 @@ def main():
     )
 
     use_amp = (device.type == "cuda")
-    scaler = GradScaler(enabled=use_amp)
+    scaler = GradScaler(
+        enabled=use_amp,
+        init_scale=2**8,
+        growth_interval=1000,
+    )
 
     global_step = 0
     pbar = tqdm(range(args.n_steps))
@@ -431,7 +435,7 @@ def main():
     )
     mse = np.mean((rgbs - train_images) ** 2)
     psnr = -10. * np.log10(mse)
-    print(f"Mean PSNR: {psnr:.4f}")
+    print(f"Mean PSNR: {psnr:.2f}")
 
     train_render_poses = train_render_poses.to(device)
     rgbs = render_path(
