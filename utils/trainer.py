@@ -257,6 +257,8 @@ def main():
             half_res=args.half_res,
             include_file_ext=args.include_file_ext,
         )
+
+        train_render_poses = train_render_poses.to(device)
         
     if args.use_white_background:
         train_images = train_images[...,:3]*train_images[...,-1:] + (1. - train_images[...,-1:])
@@ -437,7 +439,6 @@ def main():
     psnr = -10. * np.log10(mse)
     print(f"Mean PSNR: {psnr:.2f}")
 
-    train_render_poses = train_render_poses.to(device)
     rgbs = render_path(
         nerf_coarse=nerf_coarse,
         nerf_fine=nerf_fine,
