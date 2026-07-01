@@ -13,16 +13,13 @@ import torch.optim as optim
 from torch.cuda.amp import GradScaler
 from tqdm import tqdm
 
-from torchutils import (
-    ArgumentParser,
-    set_seed,
-)
+import torchutils
 
 from .load_blender_data import load_blender_data
 from .render_utils import *
 
 def parse_args():
-    parser = ArgumentParser("Simple training loop.")
+    parser = torchutils.ArgumentParser("Simple training loop.")
     parser.add_argument(
         "--config",
         type=str,
@@ -222,6 +219,13 @@ def parse_args():
         help="Azimuthal angle of the camera (default: -30.).",
     )
     parser.add_argument(
+        "--mixed_precision",
+        type=str,
+        choices=["no", "fp16", "bf16"],
+        default="no",
+        help="Whether to use mixed precision. Choose between fp16 and bf16 (bfloat16).",
+    )
+    parser.add_argument(
         "--seed",
         type=float,
         default=0,
@@ -235,7 +239,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     print(f"Device: {device}")
 
-    set_seed(args.seed)
+    torchutils.set_seed(args.seed)
     
     torch.backends.cudnn.benchmark = True
     torch.backends.cuda.matmul.allow_tf32 = True
@@ -339,9 +343,11 @@ def main():
         lr_lambda=lambda step: args.lr_decay ** (step / args.lr_decay_rate)
     )
 
-    use_amp = (device.type == "cuda")
+    dtype = torchutils.get_torch_dtype(args.mixed_precision)
+    use_amp = (device.type == "cuda") and (dtype != torch.float32)
+    use_scaler = (device.type == "cuda") and (dtype == torch.float16)
     scaler = GradScaler(
-        enabled=use_amp,
+        enabled=use_scaler,
         init_scale=2**8,
         growth_interval=1000,
     )
@@ -385,7 +391,7 @@ def main():
 
         optimizer.zero_grad()
 
-        with torch.autocast(device_type=device.type, enabled=use_amp):
+        with torch.autocast(device_type=device.type, dtype=dtype, enabled=use_amp):
             output = render(
                 nerf_coarse=nerf_coarse,
                 nerf_fine=nerf_fine,
@@ -401,10 +407,9 @@ def main():
                 raw_noise_std=args.raw_noise_std,
                 use_white_background=args.use_white_background,
             )
-
-            loss = F.mse_loss(output["rgb_map"], target)
-            if "rgb_map_fine" in output:
-                loss = loss + F.mse_loss(output["rgb_map_fine"], target)
+        loss = F.mse_loss(output["rgb_map"].float(), target.float())
+        if "rgb_map_fine" in output:
+            loss = loss + F.mse_loss(output["rgb_map_fine"].float(), target.float())
 
         scaler.scale(loss).backward()
         scaler.step(optimizer)
