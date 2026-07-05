@@ -120,7 +120,7 @@ def render(
         coarse_outputs.append(nerf_coarse(p, d))
     coarse_raw = torch.cat(coarse_outputs, dim=0)
     coarse_raw = coarse_raw.reshape(-1, n_samples, coarse_raw.shape[-1])
-    rgb_map, weights = volume_render(coarse_raw.float(), z_vals.float(), rays_d.float(), raw_noise_std, use_white_background)
+    rgb_map, weights = volume_render(coarse_raw, z_vals, rays_d, raw_noise_std, use_white_background)
     output = {"rgb_map": rgb_map}
 
     if nerf_fine is not None and n_importance > 0:
@@ -152,7 +152,7 @@ def render(
         fine_raw = torch.cat(fine_outputs, dim=0)
         fine_raw = fine_raw.reshape(-1, z_vals_fine.shape[-1], fine_raw.shape[-1])
 
-        rgb_map_fine, _ = volume_render(fine_raw.float(), z_vals_fine.float(), rays_d.float(), raw_noise_std, use_white_background)
+        rgb_map_fine, _ = volume_render(fine_raw, z_vals_fine, rays_d, raw_noise_std, use_white_background)
         output["rgb_map_fine"] = rgb_map_fine
     return output
 

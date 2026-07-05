@@ -407,9 +407,9 @@ def main():
                 raw_noise_std=args.raw_noise_std,
                 use_white_background=args.use_white_background,
             )
-        loss = F.mse_loss(output["rgb_map"].float(), target.float())
-        if "rgb_map_fine" in output:
-            loss = loss + F.mse_loss(output["rgb_map_fine"].float(), target.float())
+            loss = F.mse_loss(output["rgb_map"], target)
+            if "rgb_map_fine" in output:
+                loss = loss + F.mse_loss(output["rgb_map_fine"], target)
 
         scaler.scale(loss).backward()
         scaler.step(optimizer)

@@ -37,7 +37,7 @@ After training for 200K iterations, you can find results similiar to gif at `./a
 
 <img src="assets/lego/lego.gif" width="300" alt="lego">
 
-Using the configuration provided at `./configs/lego.toml`, we achieve a final PSNR of 32.97.
+Using the configuration provided at `./configs/lego.toml`, we achieve a final PSNR of 32.90.
 
 You can download the pre-trained models [here](https://huggingface.co/luethan2025/nerf) and use the provided Jupyter Notebook `inference.ipynb` to generate some videos.
 

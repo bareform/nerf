@@ -31,7 +31,7 @@ multires_views = 4
 chunk = 32768
 perturb = true
 raw_noise_std = 0.0
-mixed_precision = "fp16"
+mixed_precision = "bf16"
 
 [evaluation]
 n_camera_poses = 40
