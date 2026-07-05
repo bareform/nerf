@@ -39,6 +39,18 @@ After training for 200K iterations, you can find results similiar to gif at `./a
 
 Using the configuration provided at `./configs/lego.toml`, we achieve a final PSNR of 32.90.
 
+To train a low-res `chair` NeRF:
+
+```
+python3 -m utils.trainer --config="./configs/chair.toml"
+```
+
+After training for 200K iterations, you can find results similiar to gif at `./assets/chair/chair.gif`.
+
+<img src="assets/chair/chair.gif" width="300" alt="chair">
+
+Using the configuration provided at `./configs/chair.toml`, we achieve a final PSNR of 34.33.
+
 You can download the pre-trained models [here](https://huggingface.co/luethan2025/nerf) and use the provided Jupyter Notebook `inference.ipynb` to generate some videos.
 
 ## Method
