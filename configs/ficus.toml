@@ -1,0 +1,41 @@
+[dataset]
+dataset_type = "blender"
+root = "./nerf_data/nerf_synthetic/ficus"
+cache_dir = "./nerf_data/nerf_synthetic/ficus/.cache/"
+use_cache = true
+force_cache = true
+half_res = true
+include_file_ext = true
+
+[model]
+depth = 8
+width = 256
+skip_connections = [4]
+use_viewdirs = true
+
+[training]
+use_white_background = true
+central_crop_warmup_steps = 500
+central_crop_warmup_fraction = 0.5
+n_steps = 200000
+n_samples = 64
+n_random_rays = 1024
+lr = 0.0005
+lr_decay = 0.1
+lr_decay_rate = 500000
+adam_beta1 = 0.9
+adam_beta2 = 0.999
+n_importance = 128
+multires = 10
+multires_views = 4
+chunk = 32768
+perturb = true
+raw_noise_std = 0.0
+mixed_precision = "bf16"
+
+[evaluation]
+n_camera_poses = 40
+output_dir = "./results/"
+checkpoint_dir = "./checkpoints/"
+radius = 4.0
+phi = -30.0

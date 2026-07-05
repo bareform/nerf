@@ -51,6 +51,18 @@ After training for 200K iterations, you can find results similiar to gif at `./a
 
 Using the configuration provided at `./configs/chair.toml`, we achieve a final PSNR of 34.33.
 
+To train a low-res `ficus` NeRF:
+
+```
+python3 -m utils.trainer --config="./configs/ficus.toml"
+```
+
+After training for 200K iterations, you can find results similiar to gif at `./assets/ficus/ficus.gif`.
+
+<img src="assets/ficus/ficus.gif" width="300" alt="ficus">
+
+Using the configuration provided at `./configs/ficus.toml`, we achieve a final PSNR of 30.67.
+
 You can download the pre-trained models [here](https://huggingface.co/luethan2025/nerf) and use the provided Jupyter Notebook `inference.ipynb` to generate some videos.
 
 ## Method
