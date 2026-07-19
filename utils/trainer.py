@@ -346,11 +346,7 @@ def main():
     dtype = torchutils.get_torch_dtype(args.mixed_precision)
     use_amp = (device.type == "cuda") and (dtype != torch.float32)
     use_scaler = (device.type == "cuda") and (dtype == torch.float16)
-    scaler = GradScaler(
-        enabled=use_scaler,
-        init_scale=2**8,
-        growth_interval=1000,
-    )
+    scaler = GradScaler(enabled=use_scaler)
 
     global_step = 0
     pbar = tqdm(range(args.n_steps))

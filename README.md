@@ -37,7 +37,7 @@ After training for 200K iterations, you can find results similiar to gif at `./a
 
 <img src="assets/lego/lego.gif" width="300" alt="lego">
 
-Using the configuration provided at `./configs/lego.toml`, we achieve a final PSNR of 32.90.
+Using the configuration provided at `./configs/lego.toml`, we achieve a final PSNR of 32.95.
 
 To train a low-res `chair` NeRF:
 
@@ -49,7 +49,7 @@ After training for 200K iterations, you can find results similiar to gif at `./a
 
 <img src="assets/chair/chair.gif" width="300" alt="chair">
 
-Using the configuration provided at `./configs/chair.toml`, we achieve a final PSNR of 34.33.
+Using the configuration provided at `./configs/chair.toml`, we achieve a final PSNR of 34.31.
 
 To train a low-res `ficus` NeRF:
 
